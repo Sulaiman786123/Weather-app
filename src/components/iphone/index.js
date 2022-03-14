@@ -1,5 +1,6 @@
 // import preact
 import { h, render, Component } from 'preact';
+import {route,Router} from 'preact-router';
 // import stylesheets for ipad & button
 import style from './style';
 import style_iphone from '../button/style_iphone';
@@ -8,8 +9,30 @@ import $ from 'jquery';
 // import the Button component
 import Button from '../button';
 
+history.replaceState(0,0,'/');  // jsfiddle url defaults to `/_display`
+
+function search(query) {
+	route(`/Map?q=${encodeURIComponent(query)}`);
+}
+
+/** Stateless app */
+
+/** demo footer nav+search */
+const Footer = () => (
+	<div id="test">
+		<nav>
+			<a href="/">Hourly</a>
+			<a href="/Map">Map</a>
+		</nav>
+	</div>
+);
+
 
 export default class Iphone extends Component {
+
+	setText = e => {
+		this.setState({ text: e.target.value });
+	};
 //var Iphone = React.createClass({
 
 	// a constructor with initial set states
@@ -24,7 +47,7 @@ export default class Iphone extends Component {
 	// a call to fetch weather data via wunderground
 	fetchWeatherData = () => {
 		//FETCH CITY + WEATHER CONDITION + TEMPERATURE + WINDSPEED
-		var url = "http://api.openweathermap.org/data/2.5/weather?q=London&units=metric&APPID=INSERTAPIKEY";
+		var url = "http://api.openweathermap.org/data/2.5/weather?q=London&units=metric&APPID=d86e42981c23288b74c6311023cfed76";
 		$.ajax({
 			url: url,
 			dataType: "jsonp",
@@ -33,7 +56,7 @@ export default class Iphone extends Component {
 		})
 
 		//FETCH PARTICLE MATTER
-		var url = "http://api.openweathermap.org/data/2.5/air_pollution?lat=51.5072&lon=0.1276&appid=INSERTAPIKEY";
+		var url = "http://api.openweathermap.org/data/2.5/air_pollution?lat=51.5072&lon=0.1276&appid=d86e42981c23288b74c6311023cfed76";
 		$.ajax({
 			url: url,
 			dataType: "jsonp",
@@ -42,7 +65,7 @@ export default class Iphone extends Component {
 		})
 
 		//FETCH HOURLY TEMPERATURE
-		var url = "http://api.weatherapi.com/v1/forecast.json?key=INSERTAPIKEY&q=London&days=1&aqi=no&alerts=yes";
+		var url = "http://api.weatherapi.com/v1/forecast.json?key=814e082b092e4cae8fc150902220803&q=London&days=1&aqi=no&alerts=yes";
 		$.ajax({
 			url: url,
 			dataType: "json",
@@ -51,7 +74,7 @@ export default class Iphone extends Component {
 		})
 
 		//FETCH DAILY WEATHER TEMPERATURE
-		var url = "http://api.weatherapi.com/v1/forecast.json?key=INSERTAPIKEY&q=London&days=3&aqi=no&alerts=yes";
+		var url = "http://api.weatherapi.com/v1/forecast.json?key=814e082b092e4cae8fc150902220803&q=London&days=3&aqi=no&alerts=yes";
 		$.ajax({
 			url: url,
 			dataType: "json",
@@ -60,7 +83,7 @@ export default class Iphone extends Component {
 		})
 
 		//FETCH ANY ALERTS! CHECK IF WEATHER IS DANGEROUS - IF SO NOTIFY USER
-		var url = "http://api.weatherapi.com/v1/forecast.json?key=INSERTAPIKEY&q=London&days=1&aqi=no&alerts=yes";
+		var url = "http://api.weatherapi.com/v1/forecast.json?key=814e082b092e4cae8fc150902220803&q=London&days=1&aqi=no&alerts=yes";
 		$.ajax({
 			url: url,
 			dataType: "json",
@@ -73,12 +96,21 @@ export default class Iphone extends Component {
 	}
 
 	// the main render method for the iphone component
-	render() {
+	render({ }, { text='Some Text' }) {
 		// check if temperature data is fetched, if so add the sign styling to the page
 		//const tempStyles = this.state.temp ? `${style.temperature} ${style.filled}` : style.temperature;
 		// display all weather data
 		return (
+			
 			<div class={ style.container }>
+
+				<div id="test2">
+					<Router>
+						<Map path="/Map/:user?" />
+					</Router>
+					<Footer />
+				</div>	
+
 				<div class={ style.header }>
 					<div class={ style.city }>{ this.state.locate }</div>
 					<div class={ style.conditions }>{ this.state.cond }</div>
@@ -98,6 +130,7 @@ export default class Iphone extends Component {
 				<div class= { style_iphone.container }> 
 					{ this.state.display ? <Button class={ style_iphone.button } clickFunction={ this.fetchWeatherData}/ > : null }
 				</div>
+
 			</div>
 		);
 	}
@@ -193,3 +226,18 @@ export default class Iphone extends Component {
 		});      
 	}
 }
+
+const Map = ({ user, ...props }) => (
+	<section class="Map">
+		<h2>Route Planner</h2>
+
+		<input type="search" placeholder="Search..." onSearch={e => search(e.target.value)} />
+		
+		<p><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9931.601534888685!2d-0.0932851!3d51.515043549999994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487603554edf855f%3A0xa1185c8d19184c0!2sCity%20of%20London%2C%20London!5e0!3m2!1sen!2suk!4v1646846156710!5m2!1sen!2suk" 
+   		width="400" height="500" 
+    	style="border:0;" allowfullscreen="" 
+    	loading="lazy"></iframe></p>
+	</section>
+);
+
+
