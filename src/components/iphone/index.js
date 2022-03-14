@@ -24,7 +24,7 @@ export default class Iphone extends Component {
 	// a call to fetch weather data via wunderground
 	fetchWeatherData = () => {
 		//FETCH CITY + WEATHER CONDITION + TEMPERATURE + WINDSPEED
-		var url = "http://api.openweathermap.org/data/2.5/weather?q=London&units=metric&APPID=d86e42981c23288b74c6311023cfed76";
+		var url = "http://api.openweathermap.org/data/2.5/weather?q=London&units=metric&APPID=INSERTAPIKEY";
 		$.ajax({
 			url: url,
 			dataType: "jsonp",
@@ -33,7 +33,7 @@ export default class Iphone extends Component {
 		})
 
 		//FETCH PARTICLE MATTER
-		var url = "http://api.openweathermap.org/data/2.5/air_pollution?lat=51.5072&lon=0.1276&appid=d86e42981c23288b74c6311023cfed76";
+		var url = "http://api.openweathermap.org/data/2.5/air_pollution?lat=51.5072&lon=0.1276&appid=INSERTAPIKEY";
 		$.ajax({
 			url: url,
 			dataType: "jsonp",
@@ -42,7 +42,7 @@ export default class Iphone extends Component {
 		})
 
 		//FETCH HOURLY TEMPERATURE
-		var url = "http://api.weatherapi.com/v1/forecast.json?key=814e082b092e4cae8fc150902220803&q=London&days=1&aqi=no&alerts=yes";
+		var url = "http://api.weatherapi.com/v1/forecast.json?key=INSERTAPIKEY&q=London&days=1&aqi=no&alerts=yes";
 		$.ajax({
 			url: url,
 			dataType: "json",
@@ -51,7 +51,7 @@ export default class Iphone extends Component {
 		})
 
 		//FETCH DAILY WEATHER TEMPERATURE
-		var url = "http://api.weatherapi.com/v1/forecast.json?key=814e082b092e4cae8fc150902220803&q=London&days=3&aqi=no&alerts=yes";
+		var url = "http://api.weatherapi.com/v1/forecast.json?key=INSERTAPIKEY&q=London&days=3&aqi=no&alerts=yes";
 		$.ajax({
 			url: url,
 			dataType: "json",
@@ -60,7 +60,7 @@ export default class Iphone extends Component {
 		})
 
 		//FETCH ANY ALERTS! CHECK IF WEATHER IS DANGEROUS - IF SO NOTIFY USER
-		var url = "http://api.weatherapi.com/v1/forecast.json?key=814e082b092e4cae8fc150902220803&q=London&days=1&aqi=no&alerts=yes";
+		var url = "http://api.weatherapi.com/v1/forecast.json?key=INSERTAPIKEY&q=London&days=1&aqi=no&alerts=yes";
 		$.ajax({
 			url: url,
 			dataType: "json",
