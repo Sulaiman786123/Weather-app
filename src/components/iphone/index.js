@@ -51,7 +51,7 @@ export default class Iphone extends Component {
 		})
 
 		//FETCH DAILY WEATHER TEMPERATURE
-		var url = "http://api.weatherapi.com/v1/forecast.json?key=814e082b092e4cae8fc150902220803&q=London&days=1&aqi=no&alerts=yes";
+		var url = "http://api.weatherapi.com/v1/forecast.json?key=814e082b092e4cae8fc150902220803&q=London&days=3&aqi=no&alerts=yes";
 		$.ajax({
 			url: url,
 			dataType: "json",
@@ -88,7 +88,9 @@ export default class Iphone extends Component {
 						<br></br>
 						<span class = { style.hourly }>{ this.state.hourly }</span>
 						<br></br>
-						<span class = { style.hourly }>{ this.state.daily }</span>
+						<span class = { style.hourly }>{ this.state.daily_tomorrow }</span>
+						<br></br>
+						<span class = { style.hourly }>{ this.state.daily_tomtom }</span>
 						<br></br>
 						<span class = { style.hourly }>{ this.state.alert }</span>
 				</div>
@@ -155,12 +157,23 @@ export default class Iphone extends Component {
 
 	//PARSE THE RESULTS FOR DAILY TEMP
 	parseResponse_Daily = (parsed_json) => {
-		var daily_d = parsed_json['forecast'];
-		console.log(daily_d);
+		//GET DATE FOR TOMORROW
+		var date_tomorrow = parsed_json['forecast']['forecastday']['1']['date'];
 
+		//GET DATE FOR DAY AFTER TOMORROW
+		var date_tomtom = parsed_json['forecast']['forecastday']['2']['date'];
+
+		//GET TEMP FORTOMORROW
+		var daily_d_tomorrow = parsed_json['forecast']['forecastday']['1']['day']['avgtemp_c'];
+		daily_d_tomorrow = "Temperature at " + date_tomorrow + ": " + String(Math.round(daily_d_tomorrow)+ "°");
+
+		//GET TEMP FOR DAY AFTER TOMORROW
+		var daily_d_tomtom = parsed_json['forecast']['forecastday']['2']['day']['avgtemp_c'];
+		daily_d_tomtom = "Temperature at " + date_tomtom + ": " + String(Math.round(daily_d_tomtom)+ "°");
 		// set states for fields so they could be rendered later on
 		this.setState({
-			daily : daily_d
+			daily_tomorrow : daily_d_tomorrow,
+			daily_tomtom: daily_d_tomtom
 		});      
 	}
 
